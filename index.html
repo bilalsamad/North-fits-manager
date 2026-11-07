@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>North Fits | Business Manager</title>
+<style>
+:root{--bg:#f4f5f7;--panel:#fff;--ink:#17202b;--muted:#6b7280;--line:#e5e7eb;--dark:#17202b;--green:#16845b;--red:#c24141;--gold:#b7791f;--blue:#315f9b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,Segoe UI,Arial,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:9px;padding:10px 14px;background:var(--dark);color:#fff;font-weight:600}
+button.secondary{background:#eef0f3;color:var(--ink)}button.danger{background:#fff0f0;color:var(--red)}button.small{padding:6px 9px;font-size:12px}
+header{height:64px;background:#111923;color:white;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:5}
+.brand{font-weight:800;letter-spacing:2px}.brand small{display:block;font-size:10px;color:#aab4c1;letter-spacing:1.5px}
+.layout{display:grid;grid-template-columns:225px 1fr;min-height:calc(100vh - 64px)}
+aside{background:#fff;border-right:1px solid var(--line);padding:18px 12px}
+.navlabel{font-size:10px;color:#9ca3af;font-weight:700;letter-spacing:1.3px;padding:12px}
+nav button{width:100%;text-align:left;background:transparent;color:#46505d;margin:2px 0;font-weight:600}
+nav button.active,nav button:hover{background:#edf0f3;color:#111923}
+main{padding:26px;max-width:1500px;width:100%;margin:auto}
+h1{font-size:25px;margin:0 0 5px}h2{font-size:17px;margin:0 0 16px}.sub{color:var(--muted);margin:0 0 22px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:18px 0}
+.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:17px;box-shadow:0 2px 8px #17202b05}
+.metric span{display:block;color:var(--muted);font-size:12px}.metric strong{display:block;font-size:23px;margin-top:7px}.position-card{grid-column:1/-1;border:2px solid var(--line);padding:22px;background:#fff}.position-card.positive{border-color:#b8e5cf;background:#f0fbf5}.position-card.negative{border-color:#f0c2c2;background:#fff5f5}.position-card strong{font-size:32px}.position-card .position-note{font-size:12px;color:var(--muted);margin-top:5px}.green{color:var(--green)}.red{color:var(--red)}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.between{justify-content:space-between}
+.panel{margin:16px 0}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+input,select,textarea{border:1px solid #d8dce2;border-radius:8px;padding:10px;background:white;color:var(--ink);width:100%;min-width:0}
+textarea{min-height:74px;resize:vertical}label{font-size:12px;color:#586170;font-weight:650;display:block;margin:0 0 6px}
+.field{min-width:150px;flex:1}.field.wide{flex:2;min-width:230px}.formgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+table{width:100%;border-collapse:collapse;min-width:700px}th,td{text-align:left;padding:11px 9px;border-bottom:1px solid var(--line);font-size:13px}th{color:#697382;font-size:11px;text-transform:uppercase;letter-spacing:.5px;background:#fafbfc}
+.tablewrap{overflow:auto}.pill{display:inline-block;border-radius:30px;padding:4px 9px;font-size:11px;background:#eef0f3;color:#4b5563}.pill.green{background:#e7f6ef}.pill.red{background:#fff0f0}.pill.gold{background:#fff6df}
+.muted{color:var(--muted)}.right{text-align:right}.totalbox{background:#f7f8fa;padding:14px;border-radius:10px;max-width:360px;margin-left:auto}
+.hidden{display:none!important}.productrow{display:grid;grid-template-columns:2fr .7fr 1fr 1fr auto;gap:8px;align-items:end;margin:8px 0}
+.actions{display:flex;gap:6px;flex-wrap:wrap}.notice{padding:12px;border-radius:9px;background:#eef5ff;color:#315f9b;margin:12px 0}
+.empty{text-align:center;padding:32px;color:#87909c}.chart{display:flex;align-items:end;gap:9px;height:150px;padding:12px 0}.barcol{flex:1;text-align:center;font-size:10px;color:var(--muted)}.bar{background:#26394f;border-radius:5px 5px 0 0;min-height:3px;margin-bottom:6px}
+footer{color:#9ca3af;text-align:center;font-size:11px;padding:20px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}aside{position:sticky;top:64px;z-index:4;border-right:0;border-bottom:1px solid var(--line);padding:6px;overflow:auto}nav{display:flex;min-width:max-content}nav button{width:auto;padding:9px 11px}.navlabel{display:none}main{padding:16px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.formgrid{grid-template-columns:1fr 1fr}.productrow{grid-template-columns:1fr 1fr}.productrow .field:first-child{grid-column:span 2}.grid{gap:8px}.metric strong{font-size:18px}header{padding:0 14px}}
+@media print{header,aside,.noprint,button{display:none!important}.layout{display:block}main{padding:0}.panel,.card{box-shadow:none;break-inside:avoid}body{background:white}}
+</style>
+</head>
+<body>
+<header><div class="brand">NORTH FITS<small>BUSINESS MANAGER</small></div><div id="today" style="font-size:12px;color:#c5ccd5"></div></header>
+<div class="layout">
+<aside><div class="navlabel">WORKSPACE</div><nav id="nav">
+<button class="active" data-page="dashboard">▦ &nbsp; Dashboard</button>
+<button data-page="orders">▤ &nbsp; Orders</button>
+<button data-page="orderform">＋ &nbsp; Add New Order</button>
+<button data-page="income">↗ &nbsp; Income</button>
+<button data-page="expenses">↘ &nbsp; Expenses</button>
+<button data-page="purchases">▣ &nbsp; Purchases</button>
+<button data-page="reports">▥ &nbsp; Profit & Reports</button>
+<button data-page="backup">◫ &nbsp; Backup & Settings</button>
+</nav></aside>
+<main>
+<section id="dashboard" class="page">
+<h1>Business Overview</h1><p class="sub">Your North Fits business at a glance.</p>
+<div class="grid" id="metrics"></div>
+<div class="grid" style="grid-template-columns:1.3fr 1fr">
+<div class="panel"><h2>Cash In vs Cash Out · Recent 6 months</h2><div id="chart" class="chart"></div></div>
+<div class="panel"><h2>Recent Transactions</h2><div id="recent"></div></div></div>
+<div class="panel"><div class="row between"><h2>Recent Orders</h2><button class="secondary small" onclick="go('orders')">View all</button></div><div id="recentOrders"></div></div>
+</section>
+<section id="orders" class="page hidden">
+<h1>Order History</h1><p class="sub">Search, review and manage every customer order.</p>
+<div class="toolbar noprint"><input id="orderSearch" placeholder="Search order no, customer, phone or city..." oninput="renderOrders()" style="flex:2;min-width:220px"><select id="orderStatusFilter" onchange="renderOrders()" style="max-width:180px"><option value="">All statuses</option><option>Pending</option><option>Confirmed</option><option>Processing</option><option>Dispatched</option><option>Delivered</option><option>Cancelled</option></select><button onclick="go('orderform')">＋ Add Order</button></div>
+<div class="panel tablewrap" id="ordersTable"></div>
+</section>
+<section id="orderform" class="page hidden">
+<h1 id="orderFormTitle">Add New Order</h1><p class="sub">Add customer details and as many trouser items as required.</p>
+<div class="panel">
+<input type="hidden" id="editOrderId">
+<div class="formgrid">
+<div class="field"><label>Order Number *</label><input id="oNo" placeholder="e.g. NF-1001"></div>
+<div class="field"><label>Customer Name *</label><input id="oName" placeholder="Customer name"></div>
+<div class="field"><label>Primary Phone *</label><input id="oPhone" placeholder="03XXXXXXXXX"></div>
+<div class="field"><label>Secondary Phone (optional)</label><input id="oPhone2"></div>
+<div class="field"><label>Payment Purpose</label><select id="oPurpose"><option>COD</option><option>Advance</option><option>Fully Paid</option></select></div>
+<div class="field"><label>Order Status</label><select id="oStatus"><option>Pending</option><option>Confirmed</option><option>Processing</option><option>Dispatched</option><option>Delivered</option><option>Cancelled</option></select></div>
+<div class="field"><label>City *</label><input id="oCity"></div>
+<div class="field"><label>Delivery Charges (Rs.)</label><input id="oDC" type="number" min="0" value="0" oninput="calcOrder()"></div>
+<div class="field"><label>Order Date</label><input id="oDate" type="date"></div>
+<div class="field wide"><label>Complete Address *</label><textarea id="oAddress"></textarea></div>
+</div>
+<hr style="border:0;border-top:1px solid var(--line);margin:20px 0">
+<div class="row between"><h2>Order Products</h2><button class="secondary small" onclick="addProductRow()">＋ Add Another Trouser</button></div>
+<div id="productRows"></div>
+<div class="formgrid" style="max-width:650px;margin-top:14px">
+<div class="field"><label>Discount (Rs.) optional</label><input id="oDiscount" type="number" min="0" value="0" oninput="calcOrder()"></div>
+<div class="field"><label>Initial Amount Received (new order only)</label><input id="oReceived" type="number" min="0" value="0" oninput="calcOrder()"></div>
+<div class="field"><label>Payment Method</label><select id="oPayMethod"><option>Cash</option><option>Bank Transfer</option><option>JazzCash</option><option>EasyPaisa</option><option>COD / Courier</option><option>Other</option></select></div>
+</div>
+<div class="totalbox" id="orderTotals"></div>
+<div class="row between" style="margin-top:18px"><button class="secondary" onclick="go('orders')">Cancel</button><div class="row"><button class="secondary" onclick="resetOrderForm()">Clear</button><button onclick="saveOrder()">Save Order</button></div></div>
+</div></section>
+<section id="income" class="page hidden">
+<h1>Income Management</h1><p class="sub">Record actual payments received. Order-linked payments update customer balances.</p>
+<div class="panel"><h2>Add Income</h2>
+<div class="formgrid">
+<div class="field"><label>Income Type</label><select id="iType" onchange="toggleIncomeType()"><option value="order">Order Linked Payment</option><option value="manual">Manual Income</option></select></div>
+<div class="field" id="iOrderField"><label>Existing Order Number</label><input id="iOrderNo" placeholder="NF-1001" list="orderOptions" oninput="lookupIncomeOrder()"><datalist id="orderOptions"></datalist></div>
+<div class="field"><label>Amount Received (Rs.) *</label><input id="iAmount" type="number" min="1"></div>
+<div class="field"><label>Income Title / Customer</label><input id="iTitle" placeholder="Auto-filled for order payment"></div>
+<div class="field"><label>Category</label><input id="iCategory" list="incomeCats" value="Order Payment"><datalist id="incomeCats"><option>Order Payment</option><option>Other Sales</option><option>Service Income</option><option>Other</option></datalist></div>
+<div class="field"><label>Date</label><input id="iDate" type="date"></div>
+<div class="field"><label>Payment Method</label><select id="iMethod"><option>Cash</option><option>Bank Transfer</option><option>JazzCash</option><option>EasyPaisa</option><option>COD / Courier</option><option>Other</option></select></div>
+<div class="field wide"><label>Notes</label><input id="iNotes"></div>
+</div><div id="iOrderInfo" class="notice hidden"></div><div class="row" style="margin-top:14px"><button onclick="saveIncome()">Save Income</button></div>
+</div><div class="panel"><div class="row between"><h2>Income History</h2><input id="incomeSearch" placeholder="Search income..." oninput="renderIncome()" style="max-width:260px"></div><div id="incomeTable" class="tablewrap"></div></div>
+</section>
+<section id="expenses" class="page hidden">
+<h1>Expense Management</h1><p class="sub">Track business spending with flexible categories.</p>
+<div class="panel"><h2>Add Expense</h2><div class="formgrid">
+<div class="field"><label>Expense Title *</label><input id="eTitle" placeholder="e.g. Packaging material"></div>
+<div class="field"><label>Amount (Rs.) *</label><input id="eAmount" type="number" min="1"></div>
+<div class="field"><label>Category</label><input id="eCategory" list="expenseCats" placeholder="Choose or type your own"><datalist id="expenseCats"><option>Office Equipment</option><option>Packaging</option><option>Marketing</option><option>Printing</option><option>Transportation</option><option>Rent</option><option>Electricity</option><option>Maintenance</option><option>Drawing</option><option>Assets</option><option>Liabilities</option><option>Miscellaneous</option></datalist></div>
+<div class="field"><label>Date</label><input id="eDate" type="date"></div>
+<div class="field"><label>Payment Method</label><select id="eMethod"><option>Cash</option><option>Bank Transfer</option><option>JazzCash</option><option>EasyPaisa</option><option>Other</option></select></div>
+<div class="field"><label>Reference Number (optional)</label><input id="eRef"></div>
+<div class="field wide"><label>Description / Notes</label><textarea id="eNotes"></textarea></div>
+</div><div class="row" style="margin-top:14px"><button onclick="saveExpense()">Save Expense</button></div></div>
+<div class="panel"><div class="row between"><h2>Expense History</h2><input id="expenseSearch" placeholder="Search expenses..." oninput="renderExpenses()" style="max-width:260px"></div><div id="expenseTable" class="tablewrap"></div></div>
+</section>
+
+<section id="purchases" class="page hidden">
+<h1>Product Purchases</h1><p class="sub">Record trousers/products bought from the market. These purchases are tracked separately from regular business expenses.</p>
+<div class="panel"><h2>Add Product Purchase</h2><div class="formgrid">
+<div class="field"><label>Product Name *</label><input id="pTitle" placeholder="e.g. Black straight trouser"></div>
+<div class="field"><label>Quantity *</label><input id="pQty" type="number" min="1" value="1" oninput="calcPurchase()"></div>
+<div class="field"><label>Total Purchase Amount (Rs.) *</label><input id="pAmount" type="number" min="1" placeholder="e.g. 1500" oninput="calcPurchase()"></div>
+<div class="field"><label>Unit Purchase Cost</label><input id="pUnitCost" readonly></div>
+<div class="field"><label>Purchase Date</label><input id="pDate" type="date"></div>
+<div class="field"><label>Payment Method</label><select id="pMethod"><option>Cash</option><option>Bank Transfer</option><option>JazzCash</option><option>EasyPaisa</option><option>Other</option></select></div>
+<div class="field"><label>Order Number (optional)</label><input id="pOrderNo" list="purchaseOrderOptions" placeholder="e.g. NF-1001"><datalist id="purchaseOrderOptions"></datalist></div>
+<div class="field"><label>Supplier / Market (optional)</label><input id="pSupplier" placeholder="Supplier or market name"></div>
+<div class="field wide"><label>Notes</label><input id="pNotes" placeholder="Any extra details"></div>
+</div><div class="notice">Important: If this purchase is for a customer order, enter the same per-piece cost in that order's Unit Cost field. Purchase records track cash going out; order Unit Cost is used to calculate profit. Do not enter this purchase again in regular Expenses.</div>
+<div class="row" style="margin-top:14px"><button onclick="savePurchase()">Save Purchase</button></div></div>
+<div class="panel"><div class="row between"><h2>Purchase History</h2><input id="purchaseSearch" placeholder="Search product, order or supplier..." oninput="renderPurchases()" style="max-width:280px"></div><div id="purchaseTable" class="tablewrap"></div></div>
+</section>
+
+<section id="reports" class="page hidden">
+<h1>Profit & Reports</h1><p class="sub">Understand sales, cash received, costs and business profitability separately.</p>
+<div class="panel noprint"><div class="row"><div class="field"><label>From</label><input type="date" id="rFrom" onchange="renderReports()"></div><div class="field"><label>To</label><input type="date" id="rTo" onchange="renderReports()"></div><button class="secondary" onclick="clearReportDates()">All time</button><button onclick="window.print()">Print / Save PDF</button><button class="secondary" onclick="exportCSV()">Export CSV</button></div></div>
+<div id="reportMetrics" class="grid"></div>
+<div class="panel"><h2>Accounting explanation</h2><div id="accountingExplain" class="muted"></div></div>
+<div class="panel"><h2>Monthly Summary</h2><div id="monthlyTable" class="tablewrap"></div></div>
+</section>
+<section id="backup" class="page hidden">
+<h1>Backup & Settings</h1><p class="sub">Your records are stored in this browser on this device. Keep regular backups.</p>
+<div class="panel"><h2>Data Backup</h2><p class="muted">Download a full JSON backup of orders, payments, expenses, product purchases and categories. Use the same backup to restore your records.</p><div class="row"><button onclick="backupData()">Download Full Backup</button><label class="secondary" style="padding:10px 14px;border-radius:9px;cursor:pointer">Restore Backup <input type="file" id="restoreFile" accept=".json,application/json" hidden onchange="restoreData(event)"></label></div><p class="notice">Important: records stay in this browser/device. Clearing browser data can erase them. Download backups regularly and do not share backup files publicly.</p></div>
+<div class="panel"><h2>Manage Categories</h2><div class="formgrid"><div class="field"><label>Category Name</label><input id="newCat" placeholder="e.g. Photography"></div><div class="field"><label>Category Type</label><select id="newCatType"><option>Expense</option><option>Income</option></select></div><div class="field" style="align-self:end"><button onclick="addCategory()">Add Category</button></div></div><div id="categoryList" style="margin-top:14px"></div></div>
+<div class="panel"><h2>Danger Zone</h2><p class="muted">This permanently removes all local records. Download a backup first.</p><button class="danger" onclick="clearAllData()">Delete All Business Data</button></div>
+</section>
+<footer>North Fits Business Manager · Private local business records</footer>
+</main></div>
+<script>
+const KEY='northfits_business_manager_v1';
+const today=()=>new Date().toISOString().slice(0,10);
+let db=loadDB(), editingOrder=null;
+function blankDB(){return {orders:[],income:[],expenses:[],purchases:[],categories:{Expense:['Office Equipment','Packaging','Marketing','Printing','Transportation','Rent','Electricity','Maintenance','Drawing','Assets','Liabilities','Miscellaneous'],Income:['Order Payment','Other Sales','Service Income','Other']}}}
+function loadDB(){try{let d=JSON.parse(localStorage.getItem(KEY))||blankDB();d.orders??=[];d.income??=[];d.expenses??=[];d.purchases??=[];d.categories??=blankDB().categories;return d}catch(e){return blankDB()}}
+function saveDB(){localStorage.setItem(KEY,JSON.stringify(db));renderAll()}
+function money(n){return 'Rs. '+Number(n||0).toLocaleString('en-PK',{maximumFractionDigits:2})}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function id(){return 'id-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7)}
+function go(page){document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));document.getElementById(page).classList.remove('hidden');document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));if(page==='orders')renderOrders();if(page==='income')renderIncome();if(page==='expenses')renderExpenses();if(page==='purchases')renderPurchases();if(page==='reports')renderReports();if(page==='backup')renderCategories();if(page==='dashboard')renderDashboard();window.scrollTo(0,0)}
+document.getElementById('nav').addEventListener('click',e=>{let b=e.target.closest('button[data-page]');if(b)go(b.dataset.page)});
+document.getElementById('today').textContent=new Date().toLocaleDateString('en-PK',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+function metric(label,value,cls=''){return `<div class="card metric"><span>${label}</span><strong class="${cls}">${money(value)}</strong></div>`}
+function allPayments(orderId){return db.income.filter(x=>x.orderId===orderId).reduce((s,x)=>s+Number(x.amount),0)}
+function orderSubtotal(o){return (o.items||[]).reduce((s,x)=>s+x.qty*x.price,0)}
+function orderNet(o){return Math.max(0,orderSubtotal(o)-Number(o.discount||0)+Number(o.dc||0))}
+function orderReceived(o){return allPayments(o.id)+Number(o.initialReceived||0)}
+function orderBalance(o){return Math.max(0,orderNet(o)-orderReceived(o))}
+function productCost(o){return (o.items||[]).reduce((s,x)=>s+x.qty*x.cost,0)}
+function deliveredSales(){return db.orders.filter(o=>o.status==='Delivered').reduce((s,o)=>s+Math.max(0,orderSubtotal(o)-Number(o.discount||0)),0)}
+function deliveredCost(){return db.orders.filter(o=>o.status==='Delivered').reduce((s,o)=>s+productCost(o),0)}
+function totalManualIncome(){return db.income.filter(x=>!x.orderId&&!x.archivedOrder).reduce((s,x)=>s+Number(x.amount),0)}
+function totalExpenses(){return db.expenses.reduce((s,x)=>s+Number(x.amount),0)}
+function netProfit(){return deliveredSales()-deliveredCost()+totalManualIncome()-totalExpenses()}
+function receivedTotal(){return db.orders.reduce((s,o)=>s+orderReceived(o),0)+totalManualIncome()}
+function totalPurchases(){return (db.purchases||[]).reduce((s,x)=>s+Number(x.amount||0),0)}
+function overallPosition(){return receivedTotal()-totalExpenses()-totalPurchases()}
+function renderDashboard(){
+let sales=db.orders.reduce((s,o)=>s+orderNet(o),0), pending=db.orders.filter(o=>!['Delivered','Cancelled'].includes(o.status)).length, profit=netProfit();
+let position=overallPosition(),positionClass=position>=0?'positive':'negative',positionColor=position>=0?'green':'red',positionLabel=position>=0?'Overall Position · PLUS':'Overall Position · MINUS';
+document.getElementById('metrics').innerHTML=`<div class="card metric position-card ${positionClass}"><span>${positionLabel}</span><strong class="${positionColor}">${position>=0?'+':'−'}${money(Math.abs(position))}</strong><div class="position-note">Cash received − regular expenses − product purchases</div></div>`+metric('Total Order Sales',sales)+metric('Actual Cash Received',receivedTotal(),'green')+metric('Total Expenses',totalExpenses(),'red')+metric('Product Purchases',totalPurchases(),'red')+metric(profit>=0?'Net Profit':'Net Loss',Math.abs(profit),profit>=0?'green':'red')+metric('Total Orders',db.orders.length)+metric('Pending Orders',pending)+metric('Outstanding Balance',db.orders.reduce((s,o)=>s+orderBalance(o),0),'red')+metric('Delivered Orders',db.orders.filter(o=>o.status==='Delivered').length);
+let months=[];for(let i=5;i>=0;i--){let d=new Date();d.setDate(1);d.setMonth(d.getMonth()-i);let key=d.toISOString().slice(0,7);let inc=db.income.filter(x=>x.date?.startsWith(key)).reduce((s,x)=>s+x.amount,0);let exp=db.expenses.filter(x=>x.date?.startsWith(key)).reduce((s,x)=>s+x.amount,0)+db.purchases.filter(x=>x.date?.startsWith(key)).reduce((s,x)=>s+x.amount,0);months.push({key,inc,exp})}
+let max=Math.max(1,...months.flatMap(x=>[x.inc,x.exp]));document.getElementById('chart').innerHTML=months.map(m=>`<div class="barcol"><div style="height:110px;display:flex;align-items:end;justify-content:center;gap:3px"><div class="bar" title="Income ${money(m.inc)}" style="height:${m.inc/max*100}px;width:35%"></div><div class="bar" title="Expenses ${money(m.exp)}" style="height:${m.exp/max*100}px;width:35%;background:#b8c0ca"></div></div>${m.key.slice(5)}</div>`).join('');
+let trans=[...db.income.map(x=>({...x,kind:'Income'})),...db.expenses.map(x=>({...x,kind:'Expense'}))].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).slice(0,5);
+document.getElementById('recent').innerHTML=trans.length?trans.map(x=>`<div class="row between" style="padding:8px 0;border-bottom:1px solid var(--line)"><div><b>${esc(x.title||x.category)}</b><div class="muted" style="font-size:11px">${x.kind} · ${esc(x.date||'')}</div></div><b class="${x.kind==='Income'?'green':'red'}">${x.kind==='Income'?'+':'−'}${money(x.amount)}</b></div>`).join(''):'<div class="empty">No transactions yet.</div>';
+document.getElementById('recentOrders').innerHTML=ordersTable(db.orders.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5));
+}
+function statusPill(s){let c=s==='Delivered'?'green':s==='Cancelled'?'red':s==='Pending'?'gold':'';return `<span class="pill ${c}">${esc(s)}</span>`}
+function ordersTable(list){if(!list.length)return '<div class="empty">No orders found.</div>';return `<table><thead><tr><th>Order</th><th>Customer</th><th>Date</th><th>City</th><th>Net Total</th><th>Balance</th><th>Status</th><th>Actions</th></tr></thead><tbody>${list.map(o=>`<tr><td><b>${esc(o.no)}</b></td><td>${esc(o.name)}<div class="muted">${esc(o.phone)}</div></td><td>${esc(o.date)}</td><td>${esc(o.city)}</td><td>${money(orderNet(o))}</td><td>${money(orderBalance(o))}</td><td>${statusPill(o.status)}</td><td><div class="actions"><button class="secondary small" onclick="viewOrder('${o.id}')">View</button><button class="secondary small" onclick="editOrder('${o.id}')">Edit</button><button class="danger small" onclick="deleteOrder('${o.id}')">Delete</button></div></td></tr>`).join('')}</tbody></table>`}
+function renderOrders(){let q=(document.getElementById('orderSearch')?.value||'').toLowerCase(),st=document.getElementById('orderStatusFilter')?.value||'';let a=db.orders.filter(o=>(!st||o.status===st)&&[o.no,o.name,o.phone,o.phone2,o.city].join(' ').toLowerCase().includes(q));document.getElementById('ordersTable').innerHTML=ordersTable(a)}
+function addProductRow(item={name:'',qty:1,price:0,cost:0}){let d=document.createElement('div');d.className='productrow';d.innerHTML=`<div class="field"><label>Trouser / Product Name</label><input class="pname" value="${esc(item.name)}" placeholder="Product name"></div><div class="field"><label>Qty</label><input class="pqty" type="number" min="1" value="${item.qty}" oninput="calcOrder()"></div><div class="field"><label>Unit Price</label><input class="pprice" type="number" min="0" value="${item.price}" oninput="calcOrder()"></div><div class="field"><label>Unit Cost</label><input class="pcost" type="number" min="0" value="${item.cost}" oninput="calcOrder()"></div><button class="danger small" onclick="this.parentElement.remove();calcOrder()">✕</button>`;document.getElementById('productRows').appendChild(d);calcOrder()}
+function productData(){return [...document.querySelectorAll('.productrow')].map(r=>({name:r.querySelector('.pname').value.trim(),qty:Number(r.querySelector('.pqty').value||0),price:Number(r.querySelector('.pprice').value||0),cost:Number(r.querySelector('.pcost').value||0)}))}
+function calcOrder(){let items=productData(),sub=items.reduce((s,x)=>s+x.qty*x.price,0),cost=items.reduce((s,x)=>s+x.qty*x.cost,0),disc=Number(document.getElementById('oDiscount').value||0),dc=Number(document.getElementById('oDC').value||0),net=Math.max(0,sub-disc+dc),rec=Number(document.getElementById('oReceived').value||0);document.getElementById('orderTotals').innerHTML=`<div class="row between"><span>Subtotal</span><b>${money(sub)}</b></div><div class="row between"><span>Product Cost</span><b>${money(cost)}</b></div><div class="row between"><span>Discount</span><b>− ${money(disc)}</b></div><div class="row between"><span>Delivery Charges</span><b>${money(dc)}</b></div><hr><div class="row between"><b>Net Total</b><b>${money(net)}</b></div><div class="row between"><span>Received</span><b class="green">${money(rec)}</b></div><div class="row between"><b>Remaining</b><b class="red">${money(Math.max(0,net-rec))}</b></div>`}
+function resetOrderForm(){editingOrder=null;document.getElementById('editOrderId').value='';['oNo','oName','oPhone','oPhone2','oCity','oAddress'].forEach(x=>document.getElementById(x).value='');['oDC','oDiscount','oReceived'].forEach(x=>document.getElementById(x).value=0);document.getElementById('oPurpose').value='COD';document.getElementById('oStatus').value='Pending';document.getElementById('oDate').value=today();document.getElementById('productRows').innerHTML='';addProductRow();document.getElementById('orderFormTitle').textContent='Add New Order';document.getElementById('oReceived').disabled=false}
+function saveOrder(){let no=document.getElementById('oNo').value.trim(),name=document.getElementById('oName').value.trim(),phone=document.getElementById('oPhone').value.trim(),items=productData(),editId=document.getElementById('editOrderId').value; if(!no||!name||!phone||!document.getElementById('oCity').value.trim()||!document.getElementById('oAddress').value.trim()||!items.length||items.some(x=>!x.name||x.qty<1)){alert('Please complete required order details and product rows.');return}if(db.orders.some(o=>o.no.toLowerCase()===no.toLowerCase()&&o.id!==editId)){alert('This order number already exists. Use a unique order number.');return}
+let old=db.orders.find(o=>o.id===editId),received=Number(document.getElementById('oReceived').value||0);let o={id:editId||id(),no,name,phone,phone2:document.getElementById('oPhone2').value.trim(),purpose:document.getElementById('oPurpose').value,status:document.getElementById('oStatus').value,city:document.getElementById('oCity').value.trim(),dc:Number(document.getElementById('oDC').value||0),date:document.getElementById('oDate').value||today(),address:document.getElementById('oAddress').value.trim(),items,discount:Number(document.getElementById('oDiscount').value||0),initialReceived:0,payMethod:document.getElementById('oPayMethod').value};
+if(o.discount>orderSubtotal(o)+o.dc){alert('Discount cannot exceed subtotal plus delivery charges.');return}
+if(old){db.orders=db.orders.map(x=>x.id===editId?o:x)}
+else{db.orders.push(o);if(received>0)db.income.push({id:id(),orderId:o.id,orderNo:o.no,title:o.name,amount:received,category:'Order Payment',date:o.date,method:o.payMethod,notes:'Initial payment recorded with order'})}
+saveDB();alert('Order saved successfully.');resetOrderForm();go('orders')}
+function editOrder(oid){let o=db.orders.find(x=>x.id===oid);if(!o)return;editingOrder=oid;document.getElementById('editOrderId').value=oid;let map={oNo:o.no,oName:o.name,oPhone:o.phone,oPhone2:o.phone2,oPurpose:o.purpose,oStatus:o.status,oCity:o.city,oDC:o.dc,oDate:o.date,oAddress:o.address,oDiscount:o.discount,oReceived:0,oPayMethod:o.payMethod||'Cash'};Object.entries(map).forEach(([k,v])=>document.getElementById(k).value=v??'');document.getElementById('productRows').innerHTML='';o.items.forEach(addProductRow);document.getElementById('orderFormTitle').textContent='Edit Order '+o.no;document.getElementById('oReceived').disabled=true;go('orderform')}
+function deleteOrder(oid){let o=db.orders.find(x=>x.id===oid);if(!o||!confirm(`Delete order ${o.no}? Linked income records will remain in history as unlinked/manual records.`))return;db.orders=db.orders.filter(x=>x.id!==oid);db.income=db.income.map(x=>x.orderId===oid?{...x,orderId:null,archivedOrder:true,notes:(x.notes||'')+' [Original order deleted]'}:x);saveDB()}
+function viewOrder(oid){let o=db.orders.find(x=>x.id===oid);if(!o)return;let rows=o.items.map(x=>`<tr><td>${esc(x.name)}</td><td>${x.qty}</td><td>${money(x.price)}</td><td>${money(x.qty*x.price)}</td></tr>`).join('');let w=window.open('','_blank');w.document.write(`<title>Order ${esc(o.no)}</title><style>body{font:14px Arial;padding:30px;color:#222}table{width:100%;border-collapse:collapse}td,th{padding:10px;border-bottom:1px solid #ddd;text-align:left}.box{margin:20px 0;padding:14px;background:#f5f5f5}</style><h1>NORTH FITS</h1><h2>Order ${esc(o.no)}</h2><p>${esc(o.name)} · ${esc(o.phone)} · ${esc(o.city)}</p><p>${esc(o.address)}</p><table><tr><th>Product</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>${rows}</table><div class="box">Subtotal: ${money(orderSubtotal(o))}<br>Discount: ${money(o.discount)}<br>Delivery: ${money(o.dc)}<h2>Net Total: ${money(orderNet(o))}</h2>Received: ${money(orderReceived(o))}<br>Balance: ${money(orderBalance(o))}<br>Status: ${esc(o.status)}</div><button onclick="print()">Print</button>`);w.document.close()}
+function toggleIncomeType(){let order=document.getElementById('iType').value==='order';document.getElementById('iOrderField').classList.toggle('hidden',!order);document.getElementById('iOrderInfo').classList.add('hidden');if(!order)document.getElementById('iCategory').value='Other'}
+function lookupIncomeOrder(){let no=document.getElementById('iOrderNo').value.trim().toLowerCase(),o=db.orders.find(x=>x.no.toLowerCase()===no);let info=document.getElementById('iOrderInfo');if(o){document.getElementById('iTitle').value=o.name;document.getElementById('iCategory').value='Order Payment';info.classList.remove('hidden');info.innerHTML=`<b>${esc(o.name)}</b> · ${esc(o.no)}<br>Order total: ${money(orderNet(o))} · Received so far: ${money(orderReceived(o))} · Balance: <b>${money(orderBalance(o))}</b>`}else info.classList.add('hidden')}
+function saveIncome(){let type=document.getElementById('iType').value,no=document.getElementById('iOrderNo').value.trim(),o=type==='order'?db.orders.find(x=>x.no.toLowerCase()===no.toLowerCase()):null,amount=Number(document.getElementById('iAmount').value||0);if(amount<=0){alert('Enter a valid amount.');return}if(type==='order'&&!o){alert('Enter a valid existing order number.');return}if(o&&amount>orderBalance(o)){if(!confirm('This payment is greater than the remaining order balance. Record it anyway?'))return}db.income.push({id:id(),orderId:o?.id||null,orderNo:o?.no||'',title:document.getElementById('iTitle').value.trim()||(o?.name||'Manual Income'),amount,category:document.getElementById('iCategory').value||'Other',date:document.getElementById('iDate').value||today(),method:document.getElementById('iMethod').value,notes:document.getElementById('iNotes').value});['iOrderNo','iAmount','iTitle','iNotes'].forEach(x=>document.getElementById(x).value='');document.getElementById('iDate').value=today();saveDB();alert('Income saved.');}
+function renderIncome(){let opts=db.orders.map(o=>`<option>${esc(o.no)}</option>`).join('');document.getElementById('orderOptions').innerHTML=opts;let q=(document.getElementById('incomeSearch')?.value||'').toLowerCase(),a=db.income.filter(x=>[x.title,x.orderNo,x.category,x.method].join(' ').toLowerCase().includes(q)).sort((x,y)=>y.date.localeCompare(x.date));document.getElementById('incomeTable').innerHTML=a.length?`<table><thead><tr><th>Date</th><th>Title</th><th>Order</th><th>Category</th><th>Method</th><th>Amount</th><th></th></tr></thead><tbody>${a.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.title)}</td><td>${esc(x.orderNo||'—')}</td><td>${esc(x.category)}</td><td>${esc(x.method)}</td><td class="green">${money(x.amount)}</td><td><button class="danger small" onclick="deleteIncome('${x.id}')">Delete</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">No income records yet.</div>'}
+function deleteIncome(i){if(!confirm('Delete this income transaction?'))return;db.income=db.income.filter(x=>x.id!==i);saveDB()}
+function saveExpense(){let title=document.getElementById('eTitle').value.trim(),amount=Number(document.getElementById('eAmount').value||0);if(!title||amount<=0){alert('Enter expense title and valid amount.');return}db.expenses.push({id:id(),title,amount,category:document.getElementById('eCategory').value.trim()||'Miscellaneous',date:document.getElementById('eDate').value||today(),method:document.getElementById('eMethod').value,ref:document.getElementById('eRef').value,notes:document.getElementById('eNotes').value});['eTitle','eAmount','eCategory','eRef','eNotes'].forEach(x=>document.getElementById(x).value='');document.getElementById('eDate').value=today();saveDB();alert('Expense saved.')}
+function renderExpenses(){let q=(document.getElementById('expenseSearch')?.value||'').toLowerCase(),a=db.expenses.filter(x=>[x.title,x.category,x.ref,x.notes].join(' ').toLowerCase().includes(q)).sort((x,y)=>y.date.localeCompare(x.date));document.getElementById('expenseTable').innerHTML=a.length?`<table><thead><tr><th>Date</th><th>Expense</th><th>Category</th><th>Method</th><th>Amount</th><th>Reference</th><th></th></tr></thead><tbody>${a.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.title)}<div class="muted">${esc(x.notes)}</div></td><td>${esc(x.category)}</td><td>${esc(x.method)}</td><td class="red">${money(x.amount)}</td><td>${esc(x.ref||'—')}</td><td><button class="danger small" onclick="deleteExpense('${x.id}')">Delete</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">No expenses recorded.</div>'}
+function deleteExpense(i){if(!confirm('Delete this expense?'))return;db.expenses=db.expenses.filter(x=>x.id!==i);saveDB()}
+
+function calcPurchase(){let q=Number(document.getElementById('pQty').value||0),a=Number(document.getElementById('pAmount').value||0);document.getElementById('pUnitCost').value=q>0&&a>0?(a/q).toFixed(2):''}
+function savePurchase(){let title=document.getElementById('pTitle').value.trim(),qty=Number(document.getElementById('pQty').value||0),amount=Number(document.getElementById('pAmount').value||0),orderNo=document.getElementById('pOrderNo').value.trim();if(!title||qty<1||amount<=0){alert('Enter product name, valid quantity and total purchase amount.');return}let order=orderNo?db.orders.find(o=>o.no.toLowerCase()===orderNo.toLowerCase()):null;if(orderNo&&!order){alert('Order number was not found. Clear it or enter a valid order number.');return}db.purchases??=[];db.purchases.push({id:id(),title,qty,amount,unitCost:amount/qty,orderId:order?.id||null,orderNo:order?.no||'',supplier:document.getElementById('pSupplier').value.trim(),date:document.getElementById('pDate').value||today(),method:document.getElementById('pMethod').value,notes:document.getElementById('pNotes').value.trim()});['pTitle','pAmount','pOrderNo','pSupplier','pNotes'].forEach(x=>document.getElementById(x).value='');document.getElementById('pQty').value='1';document.getElementById('pDate').value=today();calcPurchase();saveDB();alert('Product purchase saved. Add the same unit cost in the linked order to calculate profit correctly.')}
+function renderPurchases(){let opts=db.orders.map(o=>`<option>${esc(o.no)}</option>`).join('');document.getElementById('purchaseOrderOptions').innerHTML=opts;let q=(document.getElementById('purchaseSearch')?.value||'').toLowerCase(),a=(db.purchases||[]).filter(x=>[x.title,x.orderNo,x.supplier,x.notes].join(' ').toLowerCase().includes(q)).sort((x,y)=>y.date.localeCompare(x.date));document.getElementById('purchaseTable').innerHTML=a.length?`<table><thead><tr><th>Date</th><th>Product</th><th>Qty</th><th>Unit Cost</th><th>Total</th><th>Order</th><th>Supplier</th><th>Method</th><th></th></tr></thead><tbody>${a.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.title)}</td><td>${x.qty}</td><td>${money(x.unitCost)}</td><td class="red">${money(x.amount)}</td><td>${esc(x.orderNo||'—')}</td><td>${esc(x.supplier||'—')}</td><td>${esc(x.method)}</td><td><button class="danger small" onclick="deletePurchase('${x.id}')">Delete</button></td></tr>`).join('')}</tbody></table>`:'<div class="empty">No product purchases recorded.</div>'}
+function deletePurchase(i){if(!confirm('Delete this purchase record?'))return;db.purchases=db.purchases.filter(x=>x.id!==i);saveDB()}
+
+function dateFilter(items){let f=document.getElementById('rFrom').value,t=document.getElementById('rTo').value;return items.filter(x=>(!f||x.date>=f)&&(!t||x.date<=t))}
+function renderReports(){let orders=dateFilter(db.orders),inc=dateFilter(db.income),exp=dateFilter(db.expenses);let purchases=dateFilter(db.purchases||[]),sales=orders.reduce((s,o)=>s+orderNet(o),0),cost=orders.filter(o=>o.status==='Delivered').reduce((s,o)=>s+productCost(o),0),delSales=orders.filter(o=>o.status==='Delivered').reduce((s,o)=>s+Math.max(0,orderSubtotal(o)-o.discount),0),manual=inc.filter(x=>!x.orderId&&!x.archivedOrder).reduce((s,x)=>s+x.amount,0),expenses=exp.reduce((s,x)=>s+x.amount,0),purchaseTotal=purchases.reduce((s,x)=>s+Number(x.amount||0),0),profit=delSales-cost+manual-expenses,received=inc.reduce((s,x)=>s+x.amount,0),cashPosition=received-expenses-purchaseTotal;
+document.getElementById('reportMetrics').innerHTML=metric('Order Sales',sales)+metric('Cash Received',received,'green')+metric('Product Cost · Delivered',cost)+metric('Expenses',expenses,'red')+metric('Product Purchases',purchaseTotal,'red')+metric('Cash Position',cashPosition,cashPosition>=0?'green':'red')+metric('Gross Profit',delSales-cost,(delSales-cost)>=0?'green':'red')+metric(profit>=0?'Net Profit':'Net Loss',Math.abs(profit),profit>=0?'green':'red')+metric('Outstanding Balance',orders.reduce((s,o)=>s+orderBalance(o),0),'red')+metric('Manual Income',manual,'green');
+document.getElementById('accountingExplain').innerHTML=`<p><b>Sales:</b> Sum of order net totals in selected period. <b>Cash received:</b> Actual recorded payments only; order-linked payments are not added again as new revenue.</p><p><b>Gross profit:</b> Delivered product sales (excluding delivery charges) minus recorded product costs for delivered orders.</p><p><b>Net profit:</b> Gross profit + manual business income − recorded operating expenses. Product purchases are not subtracted again here because delivered order product costs are already counted in gross profit.</p><p><b>Cash position:</b> Cash received − regular expenses − product purchases. This shows recorded cash movement, not bank balance or full business valuation.</p><p><b>Important:</b> For accurate profit, enter the per-unit product cost in every order. This is a basic management report, not a substitute for formal tax/accounting advice.</p>`;
+let months={};[...orders.map(o=>({date:o.date,kind:'sale',value:orderNet(o)})),...inc.map(x=>({date:x.date,kind:'income',value:x.amount})),...exp.map(x=>({date:x.date,kind:'expense',value:x.amount})),...purchases.map(x=>({date:x.date,kind:'purchase',value:x.amount}))].forEach(x=>{let k=(x.date||'').slice(0,7);if(!k)return;months[k]??={sales:0,income:0,expenses:0};months[k][x.kind==='sale'?'sales':x.kind==='income'?'income':'expenses']+=x.value});let keys=Object.keys(months).sort().reverse();document.getElementById('monthlyTable').innerHTML=keys.length?`<table><tr><th>Month</th><th>Sales</th><th>Cash Income</th><th>Expenses + Purchases</th></tr>${keys.map(k=>`<tr><td>${k}</td><td>${money(months[k].sales)}</td><td>${money(months[k].income)}</td><td>${money(months[k].expenses)}</td></tr>`).join('')}</table>`:'<div class="empty">No report data for this period.</div>'}
+function clearReportDates(){document.getElementById('rFrom').value='';document.getElementById('rTo').value='';renderReports()}
+function exportCSV(){let lines=[['Type','Date','Reference','Title','Category','Amount']];db.income.forEach(x=>lines.push(['Income',x.date,x.orderNo,x.title,x.category,x.amount]));db.expenses.forEach(x=>lines.push(['Expense',x.date,x.ref,x.title,x.category,x.amount]));(db.purchases||[]).forEach(x=>lines.push(['Product Purchase',x.date,x.orderNo,x.title,'Product Purchases',x.amount]));db.orders.forEach(x=>lines.push(['Order',x.date,x.no,x.name,'Order Sales',orderNet(x)]));let csv=lines.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\n');download(new Blob([csv],{type:'text/csv'}),'north-fits-report.csv')}
+function download(blob,name){let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href)}
+function backupData(){download(new Blob([JSON.stringify({app:'North Fits Business Manager',version:1,exportedAt:new Date().toISOString(),data:db},null,2)],{type:'application/json'}),'north-fits-backup-'+today()+'.json')}
+function restoreData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result),d=x.data||x;if(!Array.isArray(d.orders)||!Array.isArray(d.income)||!Array.isArray(d.expenses))throw Error();d.purchases??=[];d.categories??=blankDB().categories;if(!confirm('Restore backup? This will replace current records.'))return;db=d;saveDB();alert('Backup restored.')}catch(err){alert('Invalid backup file. No data changed.')}};r.readAsText(f);e.target.value=''}
+function addCategory(){let n=document.getElementById('newCat').value.trim(),t=document.getElementById('newCatType').value;if(!n)return;db.categories[t]??=[];if(!db.categories[t].includes(n))db.categories[t].push(n);document.getElementById('newCat').value='';saveDB();renderCategories()}
+function renderCategories(){document.getElementById('categoryList').innerHTML=Object.entries(db.categories).map(([t,a])=>`<h3 style="font-size:13px">${t} Categories</h3><div class="row">${a.map(c=>`<span class="pill">${esc(c)}</span>`).join(' ')}</div>`).join('')}
+function clearAllData(){if(!confirm('Are you absolutely sure? All orders, income and expenses on this browser will be permanently deleted.'))return;if(!confirm('Last confirmation: delete all business data?'))return;db=blankDB();saveDB();alert('All data cleared.')}
+function renderAll(){renderDashboard();renderOrders();renderIncome();renderExpenses();if(!document.getElementById('reports').classList.contains('hidden'))renderReports()}
+document.getElementById('oDate').value=today();document.getElementById('iDate').value=today();document.getElementById('eDate').value=today();document.getElementById('pDate').value=today();resetOrderForm();renderAll();
+</script></body></html>
